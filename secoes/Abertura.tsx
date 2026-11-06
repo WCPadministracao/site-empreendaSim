@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { HERO, PRECO } from "@/lib/content";
+import { HERO } from "@/lib/content";
 import { Acao, AcaoAssinar } from "@/components/Acao";
 import { IconeDesce } from "@/components/Icones";
 import { Revelar, RevelarTitulo } from "@/components/Revelar";
@@ -8,37 +8,26 @@ import TextLoop from "@/components/TextLoop";
 export default function Abertura() {
   return (
     <section id="abertura" aria-labelledby="abertura-titulo" className="relative pb-0 pt-[118px] md:pt-[150px]">
-      {/* A foto não é um card: ela sangra pela borda e se dissolve no fundo da página */}
+      {/* Fundo em toda a Hero, com escurecimento para preservar a leitura. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-y-0 right-0 hidden w-[44vw] max-w-[760px] lg:block"
+        className="pointer-events-none absolute inset-0 overflow-hidden"
       >
         <div className="relative h-full w-full">
           <Image
-            src="/experiencias/comunidade.webp"
+            src="/experiencias/hero-dsc-8314.jpg"
             alt=""
             fill
             priority
-            sizes="44vw"
-            className="object-cover object-[42%_45%] opacity-[0.3]"
-            style={{
-              maskImage:
-                "radial-gradient(104% 88% at 92% 44%, #000 12%, rgb(0 0 0 / .4) 50%, transparent 76%)",
-              WebkitMaskImage:
-                "radial-gradient(104% 88% at 92% 44%, #000 12%, rgb(0 0 0 / .4) 50%, transparent 76%)",
-            }}
+            sizes="100vw"
+            className="object-cover object-center"
           />
+          <div className="absolute inset-0 bg-ink/75" />
         </div>
       </div>
 
       <div className="shell relative">
         <div className="max-w-[min(100%,900px)]">
-          <Revelar className="mb-7">
-            <p className="max-w-[46ch] text-[0.95rem] leading-relaxed text-muted">
-              {HERO.nota}
-            </p>
-          </Revelar>
-
           <RevelarTitulo
             as="h1"
             id="abertura-titulo"
@@ -57,34 +46,10 @@ export default function Abertura() {
             </Acao>
           </Revelar>
 
-          <Revelar delay={0.26} className="mt-10">
-            <p className="text-[0.95rem] text-muted">
-              Assinatura mensal de{" "}
-              <span className="tnum font-semibold text-cream">
-                {PRECO.moeda} {PRECO.valor}
-              </span>
-              {PRECO.periodo} · acesso imediato pela Hotmart
-            </p>
-          </Revelar>
         </div>
       </div>
 
-      {/* no celular a mesma foto fecha a abertura, também em sangria */}
-      <div className="relative mt-16 h-[46vh] min-h-[260px] w-full lg:hidden">
-        <Image
-          src="/experiencias/comunidade.webp"
-          alt="Participantes reunidos em uma edição presencial do Empreenda Sim"
-          fill
-          sizes="100vw"
-          className="object-cover object-[40%_45%] opacity-55"
-          style={{
-            maskImage: "linear-gradient(180deg, transparent, #000 34%, #000 62%, transparent)",
-            WebkitMaskImage: "linear-gradient(180deg, transparent, #000 34%, #000 62%, transparent)",
-          }}
-        />
-      </div>
-
-      {/* faixa que fecha a abertura, em sangria de ponta a ponta */}
+      {/* faixa centralizada na divisória com a próxima seção */}
       <div className="hero-loop mt-16 md:mt-24">
         <TextLoop
           text="empreenda sim"
@@ -99,11 +64,11 @@ export default function Abertura() {
           letterSpacing={0}
           uppercase
           ribbon
-          ribbonColor="#00b85f"
-          ribbonWidth={94}
+          ribbonColor="#00B85F"
+          ribbonWidth={74}
           edgeFade={0}
           cross
-          crossAngle={12}
+          crossAngle={13}
           draggable={false}
           scrollBoost={0}
           outline={false}

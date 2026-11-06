@@ -204,7 +204,27 @@ export const EVENTOS = {
 
 export const ASSINATURA = {
   titulo: ["Um ecossistema para", "fazer sua empresa avançar."],
-  lede: "Você não está comprando apenas aulas. Está entrando em um ambiente de desenvolvimento empresarial com conteúdo, ferramentas, troca e aplicação.",
+  lede: "Aprenda com especialistas, aplique no seu negócio e conte com uma comunidade para continuar. Tudo em uma assinatura.",
+  beneficios: [
+    {
+      titulo: "Aprenda o que sua empresa precisa",
+      descricao: "Cursos e trilhas de marketing, vendas, finanças e gestão, com tecnologia, IA e automação na prática.",
+    },
+    {
+      titulo: "Transforme conteúdo em ação",
+      descricao: "Diagnósticos, checklists, e-books e o assistente Cordex IA para apoiar a aplicação no dia a dia.",
+    },
+    {
+      titulo: "Cresça com gente por perto",
+      descricao: "Comunidade de empreendedores, lives exclusivas e benefícios de Área Premium nos eventos presenciais.",
+    },
+  ],
+  oferta: "Acesso ao ecossistema completo",
+  cta: "Quero fazer parte",
+  recorrencia: "Assinatura mensal",
+  acesso: "Acesso liberado após a confirmação do pagamento.",
+  cancelamento: "Cancele quando quiser, conforme as condições do checkout.",
+  pendente: "O link de assinatura ainda está sendo configurado.",
   inclui: [
     "Cursos práticos e conteúdos com especialistas",
     "Tecnologia, Inteligência Artificial e automação",
@@ -267,7 +287,7 @@ export const FECHAMENTO = {
 } as const;
 
 export const RODAPE = {
-  marca: "Feito é melhor que perfeito.",
+  marca: "Diga SIM para crescer, aprender e transformar!",
   chamada: "Comece pelo diagnóstico da sua empresa e aplique a partir da primeira trilha.",
   cta: "Entrar para o ecossistema",
   frase: "Conhecimento, conexão e aplicação para construir empresas mais fortes.",

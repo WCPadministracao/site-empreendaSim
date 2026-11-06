@@ -173,6 +173,12 @@ Sem gradiente em texto. Sem glass decorativo. O verde é ação e caminho — nu
 
 ## 5. Tipografia
 
+Atualização: os títulos de seção (h2), incluindo o rodapé e a página de eventos,
+usam `display section-title`: tamanho `clamp(2.1rem, 4.3vw, 3.5rem)`, entrelinha
+`1.06`, tracking `-0.03em` e largura máxima `26ch`, limitada pelo contêiner.
+As frases são unidas antes da animação para permitir quebra natural balanceada.
+Os títulos principais (h1) preservam `display-xl` e a composição por linhas.
+
 | Papel | Família | Tratamento |
 |---|---|---|
 | Display | **Bricolage Grotesque** (variável: `opsz` 12–96, `wdth` 75–100, `wght` 200–800) | `clamp()` até 6rem, `letter-spacing: -0.035em`, `line-height: 0.95`, `text-wrap: balance` |

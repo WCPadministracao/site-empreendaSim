@@ -24,7 +24,8 @@ export default function Rodape() {
           <RevelarTitulo
             as="h2"
             linhas={[RODAPE.marca]}
-            className="display display-lg max-w-[13ch]"
+            destaque="SIM"
+            className="display section-title"
           />
           <Revelar delay={0.1} className="lg:pb-3">
             <p className="lede max-w-[38ch]">{RODAPE.chamada}</p>

@@ -13,7 +13,7 @@ export default function Dores() {
           <RevelarTitulo
             id="dores-titulo"
             linhas={DORES.titulo}
-            className="display display-lg max-w-[18ch]"
+            className="display section-title"
           />
 
           <Revelar delay={0.12} className="mt-7">

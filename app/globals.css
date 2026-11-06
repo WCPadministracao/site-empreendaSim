@@ -178,16 +178,19 @@ svg {
   }
 }
 
-/* Faixa TextLoop no fecho da abertura.
-   O componente desenha num viewBox de 1200×520, mas com shape "line" e o cruzamento
-   em 12°, o conteúdo ocupa só ~220 dessas unidades. A altura abaixo recorta o vazio
-   e mantém a banda centrada — 18,5vw é exatamente a altura que o conteúdo ocupa
-   quando o SVG vai de ponta a ponta. */
+/* A faixa atravessa a divisória: metade na Hero, metade no bloco seguinte.
+   Eleva o bloco da abertura para a faixa não ficar atrás do próximo fundo. */
+.bloco:has(> #abertura) {
+  z-index: 1;
+}
+
+/* O recorte acompanha o SVG; o deslocamento coloca seu centro no fim da Hero. */
 .hero-loop {
   position: relative;
   height: 19.6vw;
   min-height: 74px;
   overflow: hidden;
+  transform: translateY(50%);
 }
 
 .hero-loop .text-loop {
@@ -221,6 +224,17 @@ svg {
 }
 .display-lg {
   font-size: clamp(2.1rem, 6.6vw, 4.2rem);
+}
+
+/* Uma escala e uma medida para os títulos de seção nas duas páginas.
+   As quebras são naturais e balanceadas, sem fragmentos de frase forçados. */
+.section-title {
+  max-width: 26ch;
+  font-size: clamp(2.1rem, 4.3vw, 3.5rem);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+  overflow-wrap: break-word;
 }
 .display-md {
   font-size: clamp(1.6rem, 4.2vw, 2.6rem);

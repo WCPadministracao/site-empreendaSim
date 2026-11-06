@@ -8,24 +8,27 @@ const MARGEM = "0px 0px -12% 0px";
 /**
  * Título que surge por máscara (o texto sobe por trás de um recorte),
  * em vez do fade-and-slide que toda seção de toda landing page usa.
- * Uma linha por filho, com atraso curto entre elas.
+ * A Hero mantém sua composição por linhas; títulos de seção quebram naturalmente.
  */
 export function RevelarTitulo({
   linhas,
   className = "",
   as: Tag = "h2",
   id,
+  destaque,
 }: {
   linhas: readonly string[];
   className?: string;
   as?: "h1" | "h2" | "h3";
   id?: string;
+  destaque?: string;
 }) {
   const reduz = useReducedMotion();
+  const trechos = Tag === "h1" ? linhas : [linhas.join(" ")];
 
   return (
     <Tag className={className} id={id}>
-      {linhas.map((linha, i) => (
+      {trechos.map((linha, i) => (
         /* revelação por recorte: o texto sobe por trás de uma máscara.
            clip-path em vez de translate percentual — a altura da linha muda
            quando a fonte carrega ou o texto quebra, e a porcentagem erra o alvo. */
@@ -49,7 +52,14 @@ export function RevelarTitulo({
               : { duration: 0.56, delay: i * 0.08, ease: [0.23, 1, 0.32, 1] }
           }
         >
-          {linha}
+          {destaque
+            ? linha.split(destaque).map((parte, indice) => (
+                <span key={indice}>
+                  {indice > 0 && <span className="text-green">{destaque}</span>}
+                  {parte}
+                </span>
+              ))
+            : linha}
         </motion.span>
       ))}
     </Tag>

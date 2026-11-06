@@ -19,7 +19,7 @@ export default function Trilhas() {
           <RevelarTitulo
             id="trilhas-titulo"
             linhas={TRILHAS.titulo}
-            className="display display-lg max-w-[16ch]"
+            className="display section-title"
           />
           <Revelar delay={0.12} className="mt-7">
             <p className="lede">{TRILHAS.lede}</p>

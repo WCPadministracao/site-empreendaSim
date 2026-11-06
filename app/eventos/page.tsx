@@ -63,7 +63,7 @@ export default function EventosPage() {
                 <RevelarTitulo
                   id="agenda"
                   linhas={["Agenda de eventos", "presenciais."]}
-                  className="display display-lg max-w-[16ch]"
+                  className="display section-title"
                 />
 
                 <Revelar delay={0.12} className="mt-14 max-w-[52ch]">
@@ -103,7 +103,7 @@ export default function EventosPage() {
                   "Assinantes têm Área Premium",
                   "nos encontros presenciais.",
                 ]}
-                className="display display-lg max-w-[22ch]"
+                className="display section-title"
               />
               <Revelar delay={0.16} className="mt-10">
                 <Acao href="/#assinatura">Ver o que a assinatura inclui</Acao>

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useMotionValueEvent, useScroll } from "motion/react";
 import { NAV, PRECO } from "@/lib/content";
@@ -9,12 +10,41 @@ import { AcaoAssinar } from "./Acao";
 import { IconeFechar, IconeMenu } from "./Icones";
 
 export default function Cabecalho() {
+  const pathname = usePathname();
   const [rolou, setRolou] = useState(false);
   const { scrollY } = useScroll();
   const dialogo = useRef<HTMLDialogElement>(null);
   const [aberto, setAberto] = useState(false);
+  const [galeriaVisivel, setGaleriaVisivel] = useState(false);
+  const ocultarCabecalho = galeriaVisivel && !aberto;
 
   useMotionValueEvent(scrollY, "change", (v) => setRolou(v > 24));
+
+  useEffect(() => {
+    const galeria = document.getElementById("eventos");
+    if (!galeria) {
+      setGaleriaVisivel(false);
+      return;
+    }
+    let frame = 0;
+    const verificarGaleria = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const limites = galeria.getBoundingClientRect();
+        // Restore navigation as soon as the footer begins entering the screen.
+        setGaleriaVisivel(limites.top < window.innerHeight && limites.bottom >= window.innerHeight - 1);
+      });
+    };
+    verificarGaleria();
+    window.addEventListener("scroll", verificarGaleria, { passive: true });
+    window.addEventListener("resize", verificarGaleria, { passive: true });
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", verificarGaleria);
+      window.removeEventListener("resize", verificarGaleria);
+    };
+  }, [pathname]);
+
 
   useEffect(() => {
     const el = dialogo.current;
@@ -25,7 +55,9 @@ export default function Cabecalho() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-300 ${
+      inert={ocultarCabecalho}
+      aria-hidden={ocultarCabecalho}
+      className={`fixed inset-x-0 top-0 z-50 transition-[transform,opacity,background-color,border-color,backdrop-filter] duration-200 motion-reduce:transition-none ${ocultarCabecalho ? "pointer-events-none -translate-y-full opacity-0" : "translate-y-0 opacity-100"} ${
         rolou
           ? "border-b border-[var(--line)] bg-[rgb(8_10_9/.72)] backdrop-blur-xl backdrop-saturate-150"
           : "border-b border-transparent"

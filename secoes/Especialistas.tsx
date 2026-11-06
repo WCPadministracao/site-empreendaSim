@@ -143,7 +143,7 @@ export default function Especialistas() {
         <RevelarTitulo
           id="especialistas-titulo"
           linhas={ESPECIALISTAS.titulo}
-          className="display display-lg max-w-[18ch] lg:shrink-0"
+          className="display section-title"
         />
         <Revelar delay={0.12} className="mt-6 lg:mt-0 lg:max-w-[40ch] lg:pb-2">
           <p className="lede">{ESPECIALISTAS.lede}</p>

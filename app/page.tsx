@@ -22,26 +22,26 @@ export default function Home() {
           <Abertura />
         </Bloco>
         <Bloco tom="verde">
+          <Assinatura />
+        </Bloco>
+        <Bloco tom="preto">
           <Dores />
         </Bloco>
-        <Bloco tom="preto">
+        <Bloco tom="verde">
           <Ecossistema />
         </Bloco>
-        <Bloco tom="verde">
+        <Bloco tom="preto">
           <Especialistas />
         </Bloco>
-        <Bloco tom="preto">
+        <Bloco tom="verde">
           <Trilhas />
         </Bloco>
-        <Bloco tom="verde">
+        <Bloco tom="preto">
           <Eventos />
-        </Bloco>
-        <Bloco tom="destaque">
-          <Assinatura />
         </Bloco>
       </main>
 
-      <Bloco tom="preto">
+      <Bloco tom="verde">
         <Rodape />
       </Bloco>
     </>
