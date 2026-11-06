@@ -1,0 +1,329 @@
+@import "tailwindcss";
+
+/* ───────────────────────────── Tokens ───────────────────────────── */
+@theme {
+  --color-ink: #080a09;
+  --color-ink-deep: #0a1711;
+  --color-ink-base: #060807;
+  --color-green: #00b85f;
+  --color-green-bright: #00c968;
+  --color-green-deep: #064c31;
+  --color-cream: #f4f5ed;
+  --color-muted: #9ba8a1;
+
+  --font-display: var(--font-bricolage), "Segoe UI", system-ui, sans-serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+
+  --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+:root {
+  --line: rgb(244 245 237 / 0.14);
+  --line-strong: rgb(244 245 237 / 0.26);
+  --shell: 1240px;
+  color-scheme: dark;
+
+  /* bordas das fotos dissolvem no fundo: no celular na vertical, no desktop no lado da sangria */
+  --fade-l: linear-gradient(180deg, transparent, #000 15%, #000 85%, transparent);
+  --fade-r: linear-gradient(180deg, transparent, #000 15%, #000 85%, transparent);
+  --fade-y: linear-gradient(180deg, transparent, #000 15%, #000 85%, transparent);
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --fade-l: linear-gradient(90deg, transparent, #000 34%, #000 100%);
+    --fade-r: linear-gradient(270deg, transparent, #000 34%, #000 100%);
+  }
+}
+
+@layer base {
+/* ──────────────────────────── Base ──────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  /* o cabeçalho flutuante não pode cobrir o alvo de uma âncora */
+  scroll-padding-top: 6.5rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  overflow-x: clip;
+  background-color: var(--color-ink);
+  color: var(--color-cream);
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (min-width: 768px) {
+  body {
+    font-size: 1.125rem;
+  }
+}
+
+/* Superfícies do navegador que também carregam o design */
+::selection {
+  background: var(--color-green);
+  color: #04120a;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #060807;
+}
+::-webkit-scrollbar-thumb {
+  background: #1d2a23;
+  border-radius: 999px;
+  border: 2px solid #060807;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-green-deep);
+}
+* {
+  scrollbar-color: #1d2a23 #060807;
+  scrollbar-width: thin;
+  caret-color: var(--color-green-bright);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-green-bright);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  text-underline-offset: 0.28em;
+  text-decoration-thickness: 1px;
+}
+
+img,
+svg {
+  display: block;
+}
+}
+
+@layer components {
+/* ─────────────────────────── Grão e blocos ──────────────────────── */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.032;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>");
+}
+
+/* Blocos: um fundo por assunto, alternando preto e verde. */
+.bloco {
+  position: relative;
+  isolation: isolate;
+}
+
+.bloco--preto {
+  background: var(--color-ink);
+}
+
+.bloco--verde {
+  background: linear-gradient(168deg, #06241a 0%, #04150f 62%, #061b13 100%);
+}
+
+.bloco--destaque {
+  background: linear-gradient(150deg, #073a26 0%, #052418 55%, #042a1b 100%);
+}
+
+/* Foto da seção Especialistas (modelo PRENSA).
+   No celular é quadrada e de largura total. No desktop quem manda é a altura — o
+   GSAP a anima e a largura sai do aspect-ratio; o valor abaixo é o estado fechado,
+   que vale antes da hidratação e sem JS. */
+.foto-prensa {
+  width: 100%;
+  height: auto;
+}
+
+@media (min-width: 1024px) {
+  .foto-prensa {
+    width: auto;
+    height: clamp(150px, 18.3vw, 264px);
+  }
+}
+
+/* Blocos de texto da seção Especialistas: largura fixa no desktop, para que
+   nenhum parágrafo reflua enquanto a foto do meio cresce com a rolagem.
+   O valor precisa casar com ladoPx() em secoes/Especialistas.tsx. */
+.linha-lado {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (min-width: 1024px) {
+  .linha-lado {
+    width: clamp(220px, 23vw, 320px);
+    flex: 0 0 auto;
+  }
+}
+
+/* Faixa TextLoop no fecho da abertura.
+   O componente desenha num viewBox de 1200×520, mas com shape "line" e o cruzamento
+   em 12°, o conteúdo ocupa só ~220 dessas unidades. A altura abaixo recorta o vazio
+   e mantém a banda centrada — 18,5vw é exatamente a altura que o conteúdo ocupa
+   quando o SVG vai de ponta a ponta. */
+.hero-loop {
+  position: relative;
+  height: 19.6vw;
+  min-height: 74px;
+  overflow: hidden;
+}
+
+.hero-loop .text-loop {
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  translate: 0 -50%;
+}
+
+/* ──────────────────────────── Tipografia ────────────────────────── */
+.display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-variation-settings: "wdth" 88, "opsz" 72;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+  margin: 0;
+}
+
+/* no celular o título comprime em vez de encolher */
+@media (max-width: 480px) {
+  .display {
+    font-variation-settings: "wdth" 78, "opsz" 56;
+    letter-spacing: -0.03em;
+  }
+}
+
+.display-xl {
+  font-size: clamp(2.5rem, 7.6vw, 5.3rem);
+}
+.display-lg {
+  font-size: clamp(2.1rem, 6.6vw, 4.2rem);
+}
+.display-md {
+  font-size: clamp(1.6rem, 4.2vw, 2.6rem);
+  line-height: 1.02;
+  letter-spacing: -0.028em;
+}
+
+.lede {
+  color: var(--color-muted);
+  max-width: 62ch;
+  font-size: clamp(1.0625rem, 1.6vw, 1.25rem);
+  line-height: 1.6;
+}
+
+.prose-measure {
+  max-width: 66ch;
+}
+
+/* números tabulares onde há dado */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ───────────────────────────── Shell ────────────────────────────── */
+.shell {
+  width: 100%;
+  max-width: var(--shell);
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+
+@media (min-width: 768px) {
+  .shell {
+    padding-inline: 40px;
+  }
+}
+
+
+/* ───────────────────────────── Ação ─────────────────────────────── */
+.cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 56px;
+  padding: 0 1.6rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+  isolation: isolate;
+  overflow: hidden;
+  transition:
+    transform 140ms var(--ease-out-strong),
+    box-shadow 200ms var(--ease-out-strong),
+    background-color 200ms ease;
+}
+
+.cta-primary {
+  background: var(--color-green);
+  color: #03130a;
+  box-shadow: 0 10px 30px -14px rgb(0 184 95 / 0.75);
+}
+
+.cta-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--color-green-bright);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 320ms var(--ease-out-strong);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cta-primary:hover::after {
+    clip-path: inset(0 0 0 0);
+  }
+  .cta-primary:hover {
+    box-shadow: 0 16px 40px -14px rgb(0 201 104 / 0.8);
+  }
+  .cta-ghost:hover {
+    border-color: var(--line-strong);
+    color: var(--color-cream);
+  }
+}
+
+.cta:active {
+  transform: scale(0.97);
+}
+
+.cta-ghost {
+  border: 1px solid var(--line);
+  color: var(--color-muted);
+  transition:
+    transform 140ms var(--ease-out-strong),
+    border-color 200ms ease,
+    color 200ms ease;
+}
+
+/* ───────────────────────── Revelação por máscara ────────────────── */
+.reveal-mask > * {
+  display: block;
+}
+
+}
