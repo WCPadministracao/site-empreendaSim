@@ -19,4 +19,4 @@ O desenvolvimento partiu da identidade visual da marca. A alternância entre pre
 | **Motion** | Transições de conteúdo, entradas suaves e efeitos de paralaxe. |
 | **GSAP e @gsap/react** | Animações ligadas à rolagem na galeria e na seção de especialistas, além da entrada dos títulos letra por letra com SplitText. |
 
-A tipografia combina **Bricolage Grotesque** nos títulos e **Inter** nos textos, carregadas com `next/font`.
+A tipografia usa **Amsi Pro** nos títulos e textos, carregada com `next/font`.

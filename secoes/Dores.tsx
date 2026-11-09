@@ -28,7 +28,7 @@ export default function Dores() {
             ))}
           </ol>
 
-          <TextEffect className="mx-auto mt-12 max-w-[42ch] text-balance text-center [font-family:var(--fonte-marca),Georgia,serif] text-[clamp(1.125rem,2.2vw,1.75rem)] leading-[1.3] tracking-[-0.025em] text-cream italic md:mt-16">
+          <TextEffect className="mx-auto mt-12 max-w-[42ch] text-balance text-center text-[clamp(1.125rem,2.2vw,1.75rem)] leading-[1.3] tracking-[-0.025em] text-cream italic md:mt-16">
             {DORES.fecho}
           </TextEffect>
         </div>

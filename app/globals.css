@@ -1,12 +1,5 @@
 @import "tailwindcss";
 
-@font-face {
-  font-family: "Amsi Pro";
-  src: local("AmsiPro-Regular");
-  font-style: normal;
-  font-weight: 400;
-}
-
 /* ───────────────────────────── Tokens ───────────────────────────── */
 @theme {
   --color-ink: #080a09;
@@ -18,15 +11,14 @@
   --color-cream: #f4f5ed;
   --color-muted: #9ba8a1;
 
-  --font-display: var(--fonte-marca), var(--font-bricolage), "Segoe UI", system-ui, sans-serif;
-  --font-sans: var(--fonte-marca), var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--fonte-marca), system-ui, sans-serif;
+  --font-sans: var(--fonte-marca), system-ui, sans-serif;
 
   --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 :root {
-  --fonte-marca: "Amsi Pro";
   --line: rgb(244 245 237 / 0.14);
   --line-strong: rgb(244 245 237 / 0.26);
   --shell: 1240px;
@@ -69,7 +61,6 @@ body {
   font-family: var(--font-sans);
   font-size: 1.0625rem;
   line-height: 1.65;
-  font-synthesis-weight: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
@@ -206,17 +197,14 @@ svg {
 .display {
   font-family: var(--font-display);
   font-weight: 600;
-  font-variation-settings: "wdth" 88, "opsz" 72;
   line-height: 0.95;
   letter-spacing: -0.035em;
   text-wrap: balance;
   margin: 0;
 }
 
-/* no celular o título comprime em vez de encolher */
 @media (max-width: 480px) {
   .display {
-    font-variation-settings: "wdth" 78, "opsz" 56;
     letter-spacing: -0.03em;
   }
 }

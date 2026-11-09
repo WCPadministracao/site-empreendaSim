@@ -1,21 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const bricolage = Bricolage_Grotesque({
-  subsets: ["latin"],
-  // variável nos três eixos: é o que permite comprimir o título no celular
-  axes: ["opsz", "wdth"],
-  weight: "variable",
+const amsiPro = localFont({
+  src: "./fonts/AmsiPro-Regular.otf",
+  weight: "400",
+  style: "normal",
   display: "swap",
-  variable: "--font-bricolage",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: "variable",
-  display: "swap",
-  variable: "--font-inter",
+  variable: "--fonte-marca",
 });
 
 const titulo = "Empreenda Sim — conhecimento para empresas fortes";
@@ -57,7 +49,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-BR" className={`${bricolage.variable} ${inter.variable}`}>
+    <html lang="pt-BR" className={amsiPro.variable}>
       <body>
         <a
           href="#conteudo"
