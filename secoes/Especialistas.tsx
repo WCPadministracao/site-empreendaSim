@@ -57,8 +57,9 @@ export default function Especialistas() {
       mm.add(
         "(prefers-reduced-motion: no-preference)",
         () => {
+          const secao = escopo.current;
           const trilho = lista.current;
-          if (!trilho) return;
+          if (!secao || !trilho) return;
 
           const fotos = gsap.utils.toArray<HTMLElement>(".js-foto", escopo.current);
           const linhas = Array.from(trilho.querySelectorAll<HTMLLIElement>("li"));
@@ -69,6 +70,7 @@ export default function Especialistas() {
 
           const estadoFechado = () => {
             if (window.matchMedia("(min-width: 1024px)").matches) {
+              secao.style.removeProperty("--altura-especialistas");
               const desktop = medidasDesktop();
               fechada = desktop.fechada;
               aberta = desktop.aberta;
@@ -88,6 +90,9 @@ export default function Especialistas() {
               window.innerHeight * (1 - ANCORA) - espacoTexto,
             ));
             recuos = linhas.map((item) => item.offsetTop - linha.offsetTop);
+
+            // O trilho sobe a cada perfil. Reserve só a altura da maior linha aberta.
+            secao.style.setProperty("--altura-especialistas", `${Math.ceil(aberta + espacoTexto) + 1}px`);
           };
           estadoFechado();
           gsap.set(trilho, { y: 0 });
@@ -131,6 +136,7 @@ export default function Especialistas() {
 
           return () => {
             ScrollTrigger.removeEventListener("refreshInit", estadoFechado);
+            secao.style.removeProperty("--altura-especialistas");
             gsap.set([...fotos, trilho], { clearProps: "all" });
           };
         },
@@ -146,7 +152,7 @@ export default function Especialistas() {
       ref={escopo}
       id="especialistas"
       aria-labelledby="especialistas-titulo"
-      className="relative py-20 md:py-28"
+      className="relative pt-20 pb-8 md:pt-28 lg:pb-28"
     >
       <div className="shell lg:flex lg:items-end lg:justify-between lg:gap-14">
         <RevelarTitulo
@@ -159,7 +165,7 @@ export default function Especialistas() {
         </Revelar>
       </div>
 
-      <div ref={pino} className="mt-12 overflow-hidden lg:mt-16">
+      <div ref={pino} className="mt-12 overflow-hidden max-lg:max-h-[var(--altura-especialistas,none)] lg:mt-16">
         <div className="shell">
           <ul ref={lista} className="border-b border-[var(--line)] max-lg:relative">
             {ESPECIALISTAS.pessoas.map((pessoa, i) => (
