@@ -24,6 +24,14 @@ const subscribeReducedMotion = (notify: () => void) => {
 const getReducedMotion = () => window.matchMedia(reducedMotionQuery).matches;
 const getServerReducedMotion = () => false;
 
+const mobileStickyQuery = "(width < 1024px)";
+const subscribeMobileSticky = (notify: () => void) => {
+  const query = window.matchMedia(mobileStickyQuery);
+  query.addEventListener("change", notify);
+  return () => query.removeEventListener("change", notify);
+};
+const getMobileSticky = () => window.matchMedia(mobileStickyQuery).matches;
+
 const MASK_HIDDEN =
   "linear-gradient(to bottom, transparent 0%, transparent 100%)";
 const MASK_REVEALED = "linear-gradient(to bottom, black 0%, black 100%)";
@@ -155,6 +163,8 @@ export interface ScrollGalleryClassNames {
 }
 
 export interface ScrollGalleryProps {
+  /** Use native sticky positioning for the mobile window scroll. */
+  mobileSticky?: boolean;
   /** Reveal only the introductory heading letter by letter. */
   animateIntroTitle?: boolean;
   /** Preserve the complete photo when using contain. */
@@ -411,6 +421,7 @@ function imageScaleStyle(scale: number): CSSProperties {
 }
 
 export function ScrollGallery({
+  mobileSticky = false,
   animateIntroTitle = false,
   imageFit = "cover",
   slides,
@@ -478,6 +489,8 @@ export function ScrollGallery({
   const slideImagesRef = useRef<HTMLDivElement>(null);
 
   const reducedMotion = useSyncExternalStore(subscribeReducedMotion, getReducedMotion, getServerReducedMotion);
+  const mobileViewport = useSyncExternalStore(subscribeMobileSticky, getMobileSticky, getServerReducedMotion);
+  const stickyMobile = mobileSticky && mobileViewport && !embedded && !scrollerProp;
   const shouldAnimate = slides.length > 0 && !reducedMotion;
   const displayPrefix = showInfoBand && showPrefix && Boolean(prefixLabel);
   const displayLink = showInfoBand && showLink;
@@ -488,7 +501,7 @@ export function ScrollGallery({
         return;
       }
 
-      const scrollTriggerRoot = embedded
+      const scrollTriggerRoot = embedded || stickyMobile
         ? trackRef.current
         : sectionRef.current;
       if (!scrollTriggerRoot) {
@@ -506,6 +519,7 @@ export function ScrollGallery({
 
       let disposed = false;
       let trigger: ScrollTrigger | null = null;
+      let progressTween: gsap.core.Tween | undefined;
       let unbindResize: (() => void) | undefined;
       let limparTituloInicial: (() => void) | undefined;
       let resizeObserver: ResizeObserver | undefined;
@@ -513,7 +527,7 @@ export function ScrollGallery({
 
       const mountGallery = async () => {
         const section = sectionRef.current;
-        const scrollRoot = embedded ? trackRef.current : sectionRef.current;
+        const scrollRoot = embedded || stickyMobile ? trackRef.current : sectionRef.current;
         const slideImages = slideImagesRef.current;
         const titleElement = titleRef.current;
         const exploreLink = exploreLinkRef.current;
@@ -802,7 +816,24 @@ export function ScrollGallery({
           lastImageProgress = imageProgress;
         };
 
-        if (embedded) {
+        if (stickyMobile) {
+          const progresso = { valor: 0 };
+          progressTween = gsap.to(progresso, {
+            valor: 1,
+            paused: true,
+            ease: "none",
+            onUpdate: () => handleScrollUpdate(progresso.valor),
+          });
+          trigger = ScrollTrigger.create({
+            trigger: scrollRoot,
+            scroller,
+            start: "top top",
+            end: "bottom bottom",
+            animation: progressTween,
+            scrub: 0.45,
+            refreshPriority,
+          });
+        } else if (embedded) {
           trigger = ScrollTrigger.create({
             trigger: scrollRoot,
             scroller,
@@ -865,6 +896,7 @@ export function ScrollGallery({
         limparTituloInicial?.();
         if (titleRef.current) gsap.killTweensOf(titleRef.current);
         trigger?.kill();
+        progressTween?.kill();
         trigger = null;
         unbindResize?.();
         for (const el of createdContainers) {
@@ -873,7 +905,7 @@ export function ScrollGallery({
       };
     },
     {
-      scope: embedded ? trackRef : sectionRef,
+      scope: embedded || stickyMobile ? trackRef : sectionRef,
       dependencies: [
         animateIntroTitle,
         slides,
@@ -889,6 +921,7 @@ export function ScrollGallery({
         displayLink,
         linkLabel,
         embedded,
+        stickyMobile,
         refreshPriority,
       ],
       revertOnUpdate: true,
@@ -986,6 +1019,16 @@ export function ScrollGallery({
           )}
           style={stickyHeightStyle}
         >
+          {gallerySection}
+        </div>
+      </div>
+    );
+  }
+
+  if (mobileSticky && !scrollerProp) {
+    return (
+      <div ref={trackRef} style={trackStyle} className="relative max-lg:h-[calc((var(--sg-scroll-vh)+100)*1svh)]">
+        <div className="max-lg:sticky max-lg:top-0">
           {gallerySection}
         </div>
       </div>

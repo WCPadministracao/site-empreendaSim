@@ -147,25 +147,19 @@ svg {
   background: linear-gradient(150deg, #073a26 0%, #052418 55%, #042a1b 100%);
 }
 
-/* Foto da seção Especialistas (modelo PRENSA).
-   No celular é quadrada e de largura total. No desktop quem manda é a altura — o
-   GSAP a anima e a largura sai do aspect-ratio; o valor abaixo é o estado fechado,
-   que vale antes da hidratação e sem JS. */
+/* A altura fechada da foto é a base da animação em cada largura. */
 .foto-prensa {
-  width: 100%;
-  height: auto;
+  width: auto;
+  height: clamp(108px, 39vw, 180px);
 }
 
 @media (min-width: 1024px) {
   .foto-prensa {
-    width: auto;
     height: clamp(150px, 18.3vw, 264px);
   }
 }
 
-/* Blocos de texto da seção Especialistas: largura fixa no desktop, para que
-   nenhum parágrafo reflua enquanto a foto do meio cresce com a rolagem.
-   O valor precisa casar com ladoPx() em secoes/Especialistas.tsx. */
+/* As colunas mantêm a largura enquanto a foto cresce no vão central. */
 .linha-lado {
   width: 100%;
   min-width: 0;

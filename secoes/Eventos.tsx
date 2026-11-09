@@ -57,6 +57,7 @@ export default function Eventos() {
         </ul>
         <ScrollGallery
           animateIntroTitle
+          mobileSticky
           imageFit="cover"
           slides={slides}
           className={styles.stage}
