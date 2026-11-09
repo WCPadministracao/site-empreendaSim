@@ -29,6 +29,20 @@ const FATOR_ABERTA = 1.97; // 264 → 520 na referência
 const ANCORA = 0.2; // a linha ativa fica a 20% do topo (187/900 na referência)
 const CURSO_POR_LINHA = 1.55; // telas de rolagem que cada linha consome
 
+function medidasDesktop() {
+  const largura = window.innerWidth;
+  const shell = Math.min(largura, 1240) - 80;
+  const lado = Math.round(Math.max(220, Math.min(largura * 0.23, 320)));
+  const fechada = Math.round(Math.max(150, Math.min(largura * 0.183, 264)));
+  const aberta = Math.round(Math.min(
+    fechada * FATOR_ABERTA,
+    window.innerHeight * (1 - ANCORA) - 72,
+    shell - lado * 2,
+  ));
+
+  return { fechada, aberta, passo: fechada + 33 };
+}
+
 type Pessoa = (typeof ESPECIALISTAS.pessoas)[number];
 
 export default function Especialistas() {
@@ -53,21 +67,24 @@ export default function Especialistas() {
           let aberta = 0;
           let recuos: number[] = [];
 
-          // Meça as linhas fechadas. As biografias ocupam alturas diferentes no celular.
           const estadoFechado = () => {
+            if (window.matchMedia("(min-width: 1024px)").matches) {
+              const desktop = medidasDesktop();
+              fechada = desktop.fechada;
+              aberta = desktop.aberta;
+              gsap.set(fotos, { height: fechada });
+              recuos = linhas.map((_, indice) => indice * desktop.passo);
+              return;
+            }
+
+            // No celular, a altura de cada linha depende do tamanho da bio.
             gsap.set(fotos, { clearProps: "height" });
             fechada = fotos[0].offsetHeight;
             const linha = linhas[0];
-            const compacto = getComputedStyle(linha).display === "grid";
-            const vao = compacto
-              ? linha.clientWidth
-              : linha.clientWidth - linha.children[0].clientWidth - linha.children[2].clientWidth;
-            const espacoTexto = compacto
-              ? Math.max(...linhas.map((item) => item.offsetHeight - fechada))
-              : 72;
+            const espacoTexto = Math.max(...linhas.map((item) => item.offsetHeight - fechada));
             aberta = Math.max(fechada, Math.min(
               fechada * FATOR_ABERTA,
-              vao,
+              linha.clientWidth,
               window.innerHeight * (1 - ANCORA) - espacoTexto,
             ));
             recuos = linhas.map((item) => item.offsetTop - linha.offsetTop);
@@ -144,7 +161,7 @@ export default function Especialistas() {
 
       <div ref={pino} className="mt-12 overflow-hidden lg:mt-16">
         <div className="shell">
-          <ul ref={lista} className="relative border-b border-[var(--line)]">
+          <ul ref={lista} className="border-b border-[var(--line)] max-lg:relative">
             {ESPECIALISTAS.pessoas.map((pessoa, i) => (
               <LinhaEspecialista key={pessoa.nome} pessoa={pessoa} indice={i} />
             ))}
@@ -159,12 +176,12 @@ function LinhaEspecialista({ pessoa, indice }: { pessoa: Pessoa; indice: number 
   return (
     <li className="grid grid-cols-2 items-center gap-x-4 gap-y-3 border-t border-[var(--line)] py-4 lg:flex lg:justify-between lg:gap-0">
       {/* esquerda — largura fixa: o texto não reflui enquanto a foto cresce */}
-      <div className="linha-lado flex items-start gap-2 lg:justify-end lg:gap-4 lg:pr-10 lg:text-right">
+      <div className="linha-lado flex items-start gap-2 lg:order-1 lg:justify-end lg:gap-4 lg:pr-10 lg:text-right">
         <span className="tnum shrink-0 text-[0.75rem] text-muted lg:pt-1 lg:text-[0.85rem]">
           {String(indice + 1).padStart(2, "0")}
         </span>
         <div className="min-w-0">
-          <p className="text-sm leading-snug font-medium text-green [overflow-wrap:anywhere] lg:text-[0.95rem] lg:leading-normal">{pessoa.area}</p>
+          <p className="font-medium text-green max-lg:text-sm max-lg:leading-snug max-lg:[overflow-wrap:anywhere] lg:text-[0.95rem]">{pessoa.area}</p>
           <p className="mt-3 hidden text-[0.95rem] leading-relaxed text-muted lg:block">
             {pessoa.bio}
           </p>
@@ -172,7 +189,7 @@ function LinhaEspecialista({ pessoa, indice }: { pessoa: Pessoa; indice: number 
       </div>
 
       {/* foto quadrada — o único elemento que a timeline anima */}
-      <div className="js-foto foto-prensa relative order-first col-span-full aspect-square shrink-0 justify-self-center overflow-hidden lg:order-none">
+      <div className="js-foto foto-prensa relative aspect-square shrink-0 overflow-hidden max-lg:order-first max-lg:col-span-full max-lg:justify-self-center lg:order-2">
         <Image
           src={pessoa.foto}
           alt={pessoa.alt}
@@ -183,8 +200,8 @@ function LinhaEspecialista({ pessoa, indice }: { pessoa: Pessoa; indice: number 
       </div>
 
       {/* direita — também de largura fixa */}
-      <div className="linha-lado text-right lg:pl-10 lg:text-left">
-        <h3 className="display text-[clamp(1rem,4.4vw,1.6rem)] leading-[1.05] [overflow-wrap:anywhere] lg:text-[clamp(1.6rem,2.6vw,2.1rem)]">
+      <div className="linha-lado max-lg:text-right lg:order-3 lg:pl-10">
+        <h3 className="display leading-[1.05] max-lg:text-[clamp(1rem,4.4vw,1.6rem)] max-lg:[overflow-wrap:anywhere] lg:text-[clamp(1.6rem,2.6vw,2.1rem)]">
           {pessoa.nome}
         </h3>
       </div>
