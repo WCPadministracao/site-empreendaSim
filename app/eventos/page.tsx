@@ -5,7 +5,7 @@ import Cabecalho from "@/components/Cabecalho";
 import Bloco from "@/components/Bloco";
 import Rodape from "@/secoes/Rodape";
 import FotoParallax from "@/components/FotoParallax";
-import { Acao } from "@/components/Acao";
+import { Acao, AcaoAssinar } from "@/components/Acao";
 import { Revelar, RevelarTitulo } from "@/components/Revelar";
 
 export const metadata: Metadata = {
@@ -83,7 +83,7 @@ export default function EventosPage() {
                     oficiais do Empreenda Sim.
                   </p>
                   <div className="mt-9">
-                    <Acao href="/#assinatura">Fazer parte do ecossistema</Acao>
+                    <AcaoAssinar>Fazer parte do ecossistema</AcaoAssinar>
                   </div>
                 </Revelar>
               </div>

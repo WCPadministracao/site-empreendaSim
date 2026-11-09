@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { IconeSeta } from "./Icones";
-import { HOTMART_URL, HOTMART_IS_LIVE } from "@/lib/content";
+import { HOTMART_URL } from "@/lib/content";
 
 type Props = {
   children: ReactNode;
@@ -47,7 +47,7 @@ export function Acao({
   );
 }
 
-/** CTA de compra: aponta para o checkout oficial quando ele estiver configurado. */
+/** Link de adesão para a página do produto na Hotmart. */
 export function AcaoAssinar({
   children = "Entrar para o ecossistema",
   className = "",
@@ -62,7 +62,6 @@ export function AcaoAssinar({
       href={HOTMART_URL}
       variante={variante}
       className={className}
-      icone={HOTMART_IS_LIVE ? undefined : <IconeSeta className="size-[18px] shrink-0" />}
     >
       {children}
     </Acao>

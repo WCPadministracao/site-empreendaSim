@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { TRILHAS } from "@/lib/content";
-import { AcaoAssinar } from "@/components/Acao";
 import { Revelar, RevelarTitulo } from "@/components/Revelar";
 
 export default function Trilhas() {
@@ -125,10 +124,6 @@ export default function Trilhas() {
             </div>
           </div>
         </div>
-
-        <Revelar className="mt-16">
-          <AcaoAssinar>Começar pela primeira trilha</AcaoAssinar>
-        </Revelar>
       </div>
     </section>
   );

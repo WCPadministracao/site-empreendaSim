@@ -6,7 +6,6 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { ESPECIALISTAS } from "@/lib/content";
-import { AcaoAssinar } from "@/components/Acao";
 import { Revelar, RevelarTitulo } from "@/components/Revelar";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -158,12 +157,6 @@ export default function Especialistas() {
             ))}
           </ul>
         </div>
-      </div>
-
-      <div className="shell">
-        <Revelar className="mt-12">
-          <AcaoAssinar variante="fantasma">Aprender com quem vive o mercado</AcaoAssinar>
-        </Revelar>
       </div>
     </section>
   );

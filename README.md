@@ -14,16 +14,7 @@ Abre em `http://localhost:3100`. Build de produção: `npm run build && npm star
 
 ## O que precisa ser configurado antes de publicar
 
-Um arquivo `.env.local`:
-
-```
-NEXT_PUBLIC_HOTMART_URL=https://pay.hotmart.com/...
-```
-
-Sem ela, todos os CTAs de compra apontam para a seção de assinatura (`#assinatura`) e a
-própria seção mostra um aviso de configuração pendente. **Valide a oferta no checkout
-antes de publicar** — a referência ainda aponta `#` nesse botão, então a URL real não foi
-herdada e não foi inventada.
+Os botões de adesão usam `HOTMART_URL` em `lib/content.ts` para abrir a página do produto na Hotmart.
 
 Também ficaram de fora por não existir destino real na referência (todos apontavam para `#`):
 

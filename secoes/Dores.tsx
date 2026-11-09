@@ -1,9 +1,7 @@
 import { DORES } from "@/lib/content";
-import { Acao } from "@/components/Acao";
-import { ItemLista, Revelar, RevelarLista, RevelarTitulo } from "@/components/Revelar";
-
-/** Degraus de recuo: as quatro afirmações descem junto com a trilha. */
-const RECUO = ["lg:ml-0", "lg:ml-[7%]", "lg:ml-[14%]", "lg:ml-[21%]"];
+import { RevelarTitulo } from "@/components/Revelar";
+import { GlowCard } from "@/components/ui/spotlight-card";
+import { TextEffect } from "@/components/ui/text-effect";
 
 export default function Dores() {
   return (
@@ -16,29 +14,23 @@ export default function Dores() {
             className="display section-title"
           />
 
-          <Revelar delay={0.12} className="mt-7">
-            <p className="lede">{DORES.lede}</p>
-          </Revelar>
-
-          <RevelarLista className="mt-16 flex flex-col gap-12 md:gap-14">
+          <ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4">
             {DORES.itens.map((item, i) => (
-              <ItemLista key={item.t} className={`max-w-[46ch] ${RECUO[i]}`}>
-                <h3 className="display display-md text-cream">{item.t}</h3>
-                <p className="mt-3 text-muted">{item.d}</p>
-              </ItemLista>
+              <li key={item.t}>
+                <GlowCard>
+                  <span aria-hidden="true" className="tnum font-display text-lg font-semibold text-green">
+                    {i + 1}
+                  </span>
+                  <h3 className="display mt-6 text-[1.5rem] leading-[1.12] text-cream">{item.t}</h3>
+                  <p className="mt-3 text-base text-muted">{item.d}</p>
+                </GlowCard>
+              </li>
             ))}
-          </RevelarLista>
+          </ol>
 
-          <Revelar className="mt-20 max-w-[30ch] md:mt-28">
-            <p className="display text-[clamp(1.5rem,3.4vw,2.2rem)] leading-[1.12] tracking-[-0.025em]">
-              {DORES.fecho}
-            </p>
-            <div className="mt-9">
-              <Acao href="#ecossistema" variante="fantasma">
-                Ver como o ecossistema funciona
-              </Acao>
-            </div>
-          </Revelar>
+          <TextEffect className="mx-auto mt-12 max-w-[42ch] text-balance text-center font-[Georgia,serif] text-[clamp(1.125rem,2.2vw,1.75rem)] leading-[1.3] tracking-[-0.025em] text-cream italic md:mt-16">
+            {DORES.fecho}
+          </TextEffect>
         </div>
       </div>
     </section>

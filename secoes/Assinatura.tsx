@@ -1,6 +1,6 @@
-import { ASSINATURA, HOTMART_IS_LIVE, PRECO } from "@/lib/content";
+import { ASSINATURA, PRECO } from "@/lib/content";
 import { AcaoAssinar } from "@/components/Acao";
-import { IconeCadeado, IconeCheck } from "@/components/Icones";
+import { IconeCheck } from "@/components/Icones";
 import { Revelar, RevelarTitulo } from "@/components/Revelar";
 
 export default function Assinatura() {
@@ -39,9 +39,8 @@ export default function Assinatura() {
 
             <AcaoAssinar className="mt-7 w-full justify-center">{ASSINATURA.cta}</AcaoAssinar>
 
-            <p className="mt-5 flex items-start gap-2 text-[0.85rem] leading-relaxed text-[#b9cbc1]">
-              <IconeCadeado className="mt-0.5 size-4 shrink-0 text-green" />
-              {ASSINATURA.seguranca}
+            <p className="mt-4 text-[0.9rem] leading-relaxed text-[#b9cbc1]">
+              {ASSINATURA.destino}
             </p>
 
             <div className="mt-6 space-y-3 border-t border-[var(--line)] pt-6 text-[0.9rem] leading-relaxed text-[#b9cbc1]">
@@ -49,9 +48,6 @@ export default function Assinatura() {
               <p>{ASSINATURA.cancelamento}</p>
             </div>
 
-            {!HOTMART_IS_LIVE && (
-              <p className="mt-5 text-[0.85rem] leading-relaxed text-[#b9cbc1]">{ASSINATURA.pendente}</p>
-            )}
           </Revelar>
 
           <Revelar className="lg:col-span-7 lg:row-start-2">

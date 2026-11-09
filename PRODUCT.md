@@ -36,7 +36,7 @@ Fluxo real: descoberta (Instagram / evento) → página → checkout Hotmart →
 - Assinatura mensal **R$ 127/mês**, cancelável conforme condições do checkout. Pagamento e liberação pela **Hotmart**.
 - Conteúdo organizado em trilhas na ordem de aplicação: fundamentos → marketing e IA → vendas → finanças → processos e gestão → pessoas e liderança.
 - Cordex IA é assistente de apoio; **não** substitui consultor ou profissional especializado (está no FAQ e precisa continuar explícito).
-- **Em aberto — não inventar:** a URL real do checkout Hotmart. A referência aponta `#` nesse botão. Todos os CTAs de compra apontam para `NEXT_PUBLIC_HOTMART_URL`; sem essa variável o botão vai para a seção de assinatura. Validar a oferta antes de publicar.
+- Os botões de adesão abrem a página do produto na Hotmart pelo endereço fornecido em `HOTMART_URL`.
 - **Em aberto:** URL real do Instagram e das páginas de Política de Privacidade e Termos de Uso (também `#` na referência).
 - `/eventos` existe na referência e é linkada; neste redesign ela é uma rota a preservar, não a reescrever sem briefing.
 

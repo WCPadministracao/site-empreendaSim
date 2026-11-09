@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { ScrollGallery, ScrollGalleryTitle } from "@/components/ui/scroll-gallery";
 import { EVENTOS } from "@/lib/content";
 import styles from "./Eventos.module.css";
@@ -35,7 +34,7 @@ const slides = [
     highlight: "Relações",
     alt: "Duas participantes se abraçando durante o evento do Empreenda Sim",
   },
-].map((slide) => ({ ...slide, url: "/eventos" }));
+];
 
 const galleryClasses = {
   images: styles.images,
@@ -45,8 +44,6 @@ const galleryClasses = {
   prefixText: styles.prefixText,
   title: styles.title,
   titleText: `display section-title ${styles.titleText}`,
-  link: styles.link,
-  linkText: styles.linkText,
 };
 
 export default function Eventos() {
@@ -59,12 +56,13 @@ export default function Eventos() {
           {slides.map((slide) => <li key={slide.image}>{slide.alt}. {slide.title}</li>)}
         </ul>
         <ScrollGallery
+          animateIntroTitle
           imageFit="cover"
           slides={slides}
           className={styles.stage}
           classNames={galleryClasses}
           prefixLabel="Eventos presenciais"
-          linkLabel="Ver eventos ↗"
+          showLink={false}
           scrollPerTransition={120}
           timing={{ initialDelay: 50, finalDelay: 60, titleDuration: 0.24, scaleFrom: 1, scaleTo: 1 }}
           refreshPriority={-1}
@@ -80,9 +78,6 @@ export default function Eventos() {
               <div className={styles.infoInner}>
                 <p className={`${styles.prefix} ${styles.prefixText}`}>Eventos presenciais</p>
                 <p className={`display section-title ${styles.titleText}`}><ScrollGalleryTitle slide={slide} /></p>
-                <div className={styles.link}>
-                  <Link href="/eventos" className={styles.linkText}>Ver eventos ↗</Link>
-                </div>
               </div>
             </figcaption>
           </figure>

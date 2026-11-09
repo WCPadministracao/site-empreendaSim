@@ -25,24 +25,12 @@
 .prefixText { font-size: 1rem; font-weight: 500; color: var(--color-cream); }
 .title { overflow: hidden; min-width: 0; }
 .titleText { margin: 0; color: var(--color-cream); will-change: transform; }
-.link { display: flex; justify-content: flex-end; }
-.linkText {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  color: var(--color-cream);
-  font-size: 1rem;
-  text-decoration: underline;
-  text-underline-offset: 0.3em;
-}
-.linkText:hover { text-decoration-thickness: 2px; }
 .reduced { display: none; }
 .still { position: relative; min-height: 100svh; margin: 0; overflow: hidden; }
 .stillImage { object-fit: cover; }
 @media (max-width: 1023px) {
   .infoInner { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; padding: 0 20px 1.5rem; }
   .prefix { display: none; }
-  .link { justify-content: flex-start; }
 }
 @media (prefers-reduced-motion: reduce) {
   .animated { display: none; }

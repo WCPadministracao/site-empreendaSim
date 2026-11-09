@@ -4,6 +4,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { type CSSProperties, useMemo, useRef, useSyncExternalStore } from "react";
+import { animarTituloDividido } from "@/components/SplitText";
 import {
   isWindowScroller,
   observeWindowResize,
@@ -154,6 +155,8 @@ export interface ScrollGalleryClassNames {
 }
 
 export interface ScrollGalleryProps {
+  /** Reveal only the introductory heading letter by letter. */
+  animateIntroTitle?: boolean;
   /** Preserve the complete photo when using contain. */
   imageFit?: "cover" | "contain";
   className?: string;
@@ -408,6 +411,7 @@ function imageScaleStyle(scale: number): CSSProperties {
 }
 
 export function ScrollGallery({
+  animateIntroTitle = false,
   imageFit = "cover",
   slides,
   stripsCount = 20,
@@ -503,6 +507,7 @@ export function ScrollGallery({
       let disposed = false;
       let trigger: ScrollTrigger | null = null;
       let unbindResize: (() => void) | undefined;
+      let limparTituloInicial: (() => void) | undefined;
       let resizeObserver: ResizeObserver | undefined;
       const createdContainers: HTMLDivElement[] = [];
 
@@ -691,6 +696,8 @@ export function ScrollGallery({
             duration: titleDuration,
             ease: titleEase,
             onComplete: () => {
+              limparTituloInicial?.();
+              limparTituloInicial = undefined;
               setSlideTitle(titleEl, slides[index]);
               gsap.set(titleEl, { y: inY });
               gsap.to(titleEl, {
@@ -839,6 +846,10 @@ export function ScrollGallery({
           });
         }
 
+        if (animateIntroTitle && titleEl) {
+          limparTituloInicial = animarTituloDividido(titleEl);
+        }
+
         ScrollTrigger.refresh();
         trigger.refresh();
         handleScrollUpdate(trigger.progress);
@@ -851,6 +862,7 @@ export function ScrollGallery({
       return () => {
         disposed = true;
         resizeObserver?.disconnect();
+        limparTituloInicial?.();
         if (titleRef.current) gsap.killTweensOf(titleRef.current);
         trigger?.kill();
         trigger = null;
@@ -863,6 +875,7 @@ export function ScrollGallery({
     {
       scope: embedded ? trackRef : sectionRef,
       dependencies: [
+        animateIntroTitle,
         slides,
         imageFit,
         stripsCount,

@@ -2,14 +2,11 @@
 
 import { motion, useReducedMotion, type Variants } from "motion/react";
 import type { ReactNode } from "react";
+import { SplitText } from "./SplitText";
 
 const MARGEM = "0px 0px -12% 0px";
 
-/**
- * Título que surge por máscara (o texto sobe por trás de um recorte),
- * em vez do fade-and-slide que toda seção de toda landing page usa.
- * A Hero mantém sua composição por linhas; títulos de seção quebram naturalmente.
- */
+/** A Hero mantém sua composição por linhas; títulos de seção quebram naturalmente. */
 export function RevelarTitulo({
   linhas,
   className = "",
@@ -23,35 +20,12 @@ export function RevelarTitulo({
   id?: string;
   destaque?: string;
 }) {
-  const reduz = useReducedMotion();
   const trechos = Tag === "h1" ? linhas : [linhas.join(" ")];
 
   return (
-    <Tag className={className} id={id}>
+    <SplitText as={Tag} className={className} id={id} texto={linhas.join(" ")} destaque={destaque}>
       {trechos.map((linha, i) => (
-        /* revelação por recorte: o texto sobe por trás de uma máscara.
-           clip-path em vez de translate percentual — a altura da linha muda
-           quando a fonte carrega ou o texto quebra, e a porcentagem erra o alvo. */
-        <motion.span
-          key={linha}
-          className="block"
-          initial={
-            reduz
-              ? { opacity: 0 }
-              : { clipPath: "inset(100% 0% -12% 0%)", y: 14, opacity: 0.001 }
-          }
-          whileInView={
-            reduz
-              ? { opacity: 1 }
-              : { clipPath: "inset(0% 0% -12% 0%)", y: 0, opacity: 1 }
-          }
-          viewport={{ once: true, margin: MARGEM }}
-          transition={
-            reduz
-              ? { duration: 0.16 }
-              : { duration: 0.56, delay: i * 0.08, ease: [0.23, 1, 0.32, 1] }
-          }
-        >
+        <span key={linha} className="block">
           {destaque
             ? linha.split(destaque).map((parte, indice) => (
                 <span key={indice}>
@@ -60,9 +34,10 @@ export function RevelarTitulo({
                 </span>
               ))
             : linha}
-        </motion.span>
+          {i < trechos.length - 1 && " "}
+        </span>
       ))}
-    </Tag>
+    </SplitText>
   );
 }
 
@@ -70,10 +45,14 @@ export function RevelarTitulo({
 export function Revelar({
   children,
   delay = 0,
+  duracao = 0.38,
+  deslocamento = 10,
   className = "",
 }: {
   children: ReactNode;
   delay?: number;
+  duracao?: number;
+  deslocamento?: number;
   className?: string;
 }) {
   const reduz = useReducedMotion();
@@ -81,10 +60,10 @@ export function Revelar({
   return (
     <motion.div
       className={className}
-      initial={reduz ? { opacity: 0 } : { opacity: 0, y: 10 }}
+      initial={reduz ? { opacity: 0 } : { opacity: 0, y: deslocamento }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: MARGEM }}
-      transition={{ duration: reduz ? 0.16 : 0.38, delay, ease: [0.23, 1, 0.32, 1] }}
+      transition={{ duration: reduz ? 0.16 : duracao, delay, ease: [0.23, 1, 0.32, 1] }}
     >
       {children}
     </motion.div>

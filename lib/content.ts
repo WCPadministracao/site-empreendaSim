@@ -4,14 +4,8 @@
  * sem depoimento, sem número de membros, sem data de evento, sem logo de cliente.
  */
 
-/**
- * Checkout oficial da Hotmart.
- * A referência ainda aponta `#` neste botão, então a URL real não é conhecida.
- * Defina NEXT_PUBLIC_HOTMART_URL antes de publicar — e valide a oferta no checkout.
- * Sem a variável, o CTA leva à seção de assinatura, que explica a oferta.
- */
-export const HOTMART_URL = process.env.NEXT_PUBLIC_HOTMART_URL || "#assinatura";
-export const HOTMART_IS_LIVE = Boolean(process.env.NEXT_PUBLIC_HOTMART_URL);
+export const HOTMART_URL =
+  "https://hotmart.com/pt-br/marketplace/produtos/empreenda-sim-comunidade/P106727091B";
 
 export const PRECO = { valor: "127", moeda: "R$", periodo: "/mês" } as const;
 
@@ -19,7 +13,7 @@ export const NAV = [
   { href: "#ecossistema", label: "O ecossistema" },
   { href: "#trilhas", label: "Trilhas" },
   { href: "#especialistas", label: "Especialistas" },
-  { href: "/eventos", label: "Eventos presenciais" },
+  { href: "/#eventos", label: "Eventos presenciais" },
 ] as const;
 
 export const HERO = {
@@ -30,7 +24,6 @@ export const HERO = {
 
 export const DORES = {
   titulo: ["Trabalhar mais não resolve", "uma empresa desorganizada."],
-  lede: "Você pode até aumentar o faturamento. Mas, sem gestão, cada novo cliente também traz mais cobrança, retrabalho e incêndios.",
   itens: [
     {
       t: "Você é o gargalo",
@@ -50,35 +43,30 @@ export const DORES = {
     },
   ],
   fecho:
-    "O Empreenda Sim existe para transformar conhecimento em decisão e decisão em resultado.",
+    "O Empreenda Sim tem como propósito transformar conhecimento em decisões estratégicas e decisões em resultados concretos",
 } as const;
 
 export const ECOSSISTEMA = {
   titulo: ["Conteúdo, conexão", "e ferramentas para agir."],
-  lede: "O Empreenda Sim reúne o que o empreendedor normalmente procura separado. Você aprende, leva para a empresa, troca com outros membros e conta com apoio para continuar.",
   partes: [
     {
-      acao: "Aprenda",
-      t: "Cursos e trilhas práticas",
-      d: "Conteúdos sobre gestão, vendas, marketing, finanças, tecnologia, IA, processos e pessoas.",
+      t: "Cursos práticos",
+      d: "Aprenda sobre gestão, vendas, marketing e finanças.",
       icone: "aprenda",
     },
     {
-      acao: "Aplique",
-      t: "Materiais de execução",
-      d: "Diagnósticos, checklists, e-books e atividades para usar dentro da empresa.",
+      t: "Materiais para aplicar",
+      d: "Use diagnósticos, checklists e e-books no seu negócio.",
       icone: "aplique",
     },
     {
-      acao: "Conte com apoio",
       t: "Cordex IA",
-      d: "Um assistente virtual preparado para apoiar dúvidas e decisões do seu negócio.",
+      d: "Conte com um assistente de IA para tirar dúvidas e apoiar decisões.",
       icone: "apoio",
     },
     {
-      acao: "Conecte-se",
       t: "Comunidade e eventos",
-      d: "Troque experiências e tenha benefícios exclusivos nos eventos presenciais.",
+      d: "Troque experiências e tenha benefícios nos eventos presenciais.",
       icone: "conecte",
     },
   ],
@@ -224,7 +212,6 @@ export const ASSINATURA = {
   recorrencia: "Assinatura mensal",
   acesso: "Acesso liberado após a confirmação do pagamento.",
   cancelamento: "Cancele quando quiser, conforme as condições do checkout.",
-  pendente: "O link de assinatura ainda está sendo configurado.",
   inclui: [
     "Cursos práticos e conteúdos com especialistas",
     "Tecnologia, Inteligência Artificial e automação",
@@ -235,7 +222,7 @@ export const ASSINATURA = {
   ],
   condicoes:
     "Acesso imediato pela Hotmart. Cancele quando quiser, conforme as condições apresentadas no checkout.",
-  seguranca: "Pagamento seguro processado pela Hotmart.",
+  destino: "Confira a oferta e as condições da assinatura na Hotmart.",
 } as const;
 
 /**
