@@ -47,6 +47,7 @@ type Pessoa = (typeof ESPECIALISTAS.pessoas)[number];
 
 export default function Especialistas() {
   const escopo = useRef<HTMLElement>(null);
+  const percurso = useRef<HTMLDivElement>(null);
   const pino = useRef<HTMLDivElement>(null);
   const lista = useRef<HTMLUListElement>(null);
 
@@ -55,12 +56,18 @@ export default function Especialistas() {
       const mm = gsap.matchMedia();
 
       mm.add(
-        "(prefers-reduced-motion: no-preference)",
-        () => {
+        {
+          desktop: "(width >= 1024px) and (prefers-reduced-motion: no-preference)",
+          celular: "(width < 1024px) and (prefers-reduced-motion: no-preference)",
+        },
+        ({ conditions }) => {
           const secao = escopo.current;
+          const pista = percurso.current;
+          const painel = pino.current;
           const trilho = lista.current;
-          if (!secao || !trilho) return;
+          if (!secao || !pista || !painel || !trilho) return;
 
+          const desktop = conditions?.desktop;
           const fotos = gsap.utils.toArray<HTMLElement>(".js-foto", escopo.current);
           const linhas = Array.from(trilho.querySelectorAll<HTMLLIElement>("li"));
           const total = linhas.length;
@@ -68,14 +75,19 @@ export default function Especialistas() {
           let aberta = 0;
           let recuos: number[] = [];
 
+          if (!desktop) {
+            secao.style.setProperty("--posicao-especialistas", "sticky");
+            secao.style.setProperty("--curso-especialistas", `${CURSO_POR_LINHA * total * 100}svh`);
+          }
+          const topoMobile = () => parseFloat(getComputedStyle(painel).top);
+
           const estadoFechado = () => {
-            if (window.matchMedia("(min-width: 1024px)").matches) {
-              secao.style.removeProperty("--altura-especialistas");
-              const desktop = medidasDesktop();
-              fechada = desktop.fechada;
-              aberta = desktop.aberta;
+            if (desktop) {
+              const medidas = medidasDesktop();
+              fechada = medidas.fechada;
+              aberta = medidas.aberta;
               gsap.set(fotos, { height: fechada });
-              recuos = linhas.map((_, indice) => indice * desktop.passo);
+              recuos = linhas.map((_, indice) => indice * medidas.passo);
               return;
             }
 
@@ -87,7 +99,7 @@ export default function Especialistas() {
             aberta = Math.max(fechada, Math.min(
               fechada * FATOR_ABERTA,
               linha.clientWidth,
-              window.innerHeight * (1 - ANCORA) - espacoTexto,
+              topoMobile() * (1 / ANCORA - 1) - espacoTexto,
             ));
             recuos = linhas.map((item) => item.offsetTop - linha.offsetTop);
 
@@ -99,15 +111,15 @@ export default function Especialistas() {
           ScrollTrigger.addEventListener("refreshInit", estadoFechado);
 
           const tl = gsap.timeline({
-            defaults: { ease: "none" },
+            defaults: { ease: desktop ? "none" : "sine.inOut" },
             scrollTrigger: {
-              trigger: pino.current,
-              start: `top ${ANCORA * 100}%`,
-              end: () =>
-                `+=${Math.round(window.innerHeight * CURSO_POR_LINHA) * total}`,
-              pin: pino.current,
-              pinSpacing: true,
-              scrub: 1,
+              trigger: desktop ? painel : pista,
+              start: desktop ? `top ${ANCORA * 100}%` : () => `top ${topoMobile()}px`,
+              end: () => desktop
+                ? `+=${Math.round(window.innerHeight * CURSO_POR_LINHA) * total}`
+                : `+=${pista.offsetHeight - painel.offsetHeight}`,
+              pin: desktop ? painel : false,
+              scrub: desktop ? 1 : 0.45,
               invalidateOnRefresh: true,
             },
           });
@@ -137,6 +149,8 @@ export default function Especialistas() {
           return () => {
             ScrollTrigger.removeEventListener("refreshInit", estadoFechado);
             secao.style.removeProperty("--altura-especialistas");
+            secao.style.removeProperty("--posicao-especialistas");
+            secao.style.removeProperty("--curso-especialistas");
             gsap.set([...fotos, trilho], { clearProps: "all" });
           };
         },
@@ -165,13 +179,15 @@ export default function Especialistas() {
         </Revelar>
       </div>
 
-      <div ref={pino} className="mt-12 overflow-hidden max-lg:max-h-[var(--altura-especialistas,none)] lg:mt-16">
-        <div className="shell">
-          <ul ref={lista} className="border-b border-[var(--line)] max-lg:relative">
-            {ESPECIALISTAS.pessoas.map((pessoa, i) => (
-              <LinhaEspecialista key={pessoa.nome} pessoa={pessoa} indice={i} />
-            ))}
-          </ul>
+      <div ref={percurso} className="max-lg:mt-12 max-lg:after:block max-lg:after:h-[var(--curso-especialistas,0px)]">
+        <div ref={pino} className="overflow-hidden max-lg:[position:var(--posicao-especialistas,static)] max-lg:top-[20svh] max-lg:max-h-[var(--altura-especialistas,none)] max-lg:[contain:layout] lg:mt-16">
+          <div className="shell">
+            <ul ref={lista} className="border-b border-[var(--line)] max-lg:relative">
+              {ESPECIALISTAS.pessoas.map((pessoa, i) => (
+                <LinhaEspecialista key={pessoa.nome} pessoa={pessoa} indice={i} />
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </section>

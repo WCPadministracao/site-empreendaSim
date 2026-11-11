@@ -11,8 +11,9 @@ gsap.registerPlugin(useGSAP, ScrollTrigger, GSAPSplitText);
 /** Adaptação do efeito rise do React Bits para os títulos do site. */
 export function animarTituloDividido(titulo: HTMLElement, gatilho = titulo) {
   const media = gsap.matchMedia();
+  let cancelado = false;
 
-  media.add("(prefers-reduced-motion: no-preference)", () => {
+  function iniciar() {
     const texto = GSAPSplitText.create(titulo, {
       type: "words,chars",
       tag: "span",
@@ -62,9 +63,23 @@ export function animarTituloDividido(titulo: HTMLElement, gatilho = titulo) {
       onda?.kill();
       texto.revert();
     };
-  });
+  }
 
-  return () => media.revert();
+  const preparar = () => {
+    if (!cancelado) media.add("(prefers-reduced-motion: no-preference)", iniciar);
+  };
+
+  // No celular, a troca de fonte pode alterar as quebras do título antes da entrada.
+  if (window.matchMedia("(width < 1024px)").matches && document.fonts.status === "loading") {
+    void document.fonts.ready.then(preparar);
+  } else {
+    preparar();
+  }
+
+  return () => {
+    cancelado = true;
+    media.revert();
+  };
 }
 
 export function SplitText({ as: Tag, id, className, texto, destaque, children }: {

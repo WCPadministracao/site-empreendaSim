@@ -50,7 +50,7 @@ export default function Abertura() {
       </div>
 
       {/* faixa centralizada na divisória com a próxima seção */}
-      <div className="hero-loop mt-16 md:mt-24">
+      <div className="hero-loop mt-16 max-md:[&_.text-loop-svg_path[stroke-width]]:[stroke-width:92px] md:mt-24">
         <TextLoop
           text="empreenda sim"
           shape="line"
