@@ -2,8 +2,9 @@ import Image from "next/image";
 import { HERO } from "@/lib/content";
 import { Acao, AcaoAssinar } from "@/components/Acao";
 import { IconeDesce } from "@/components/Icones";
-import { Revelar, RevelarTitulo } from "@/components/Revelar";
+import { RevelarTitulo } from "@/components/Revelar";
 import TextLoop from "@/components/TextLoop";
+import { AnimatedCountdown } from "@/components/ui/animated-countdown";
 
 export default function Abertura() {
   return (
@@ -22,12 +23,16 @@ export default function Abertura() {
             sizes="100vw"
             className="object-cover object-center"
           />
-          <div className="absolute inset-0 bg-ink/75" />
+          <div className="absolute inset-0 bg-linear-to-r from-ink/95 via-ink/85 to-ink/65" />
         </div>
       </div>
 
       <div className="shell relative">
         <div className="max-w-[min(100%,900px)]">
+          <p className="mb-5 text-sm font-semibold text-green sm:text-base">
+            <time dateTime={HERO.dataEvento.slice(0, 10)}>{HERO.dataExibida}</time>
+            {" · Campinas, SP"}
+          </p>
           <RevelarTitulo
             as="h1"
             id="abertura-titulo"
@@ -35,22 +40,23 @@ export default function Abertura() {
             className="display display-xl"
           />
 
-          <Revelar delay={0.14} className="mt-8">
-            <p className="lede">{HERO.lede}</p>
-          </Revelar>
+          <p className="lede mt-5 text-cream/85">{HERO.lede}</p>
 
-          <Revelar delay={0.2} className="mt-10 flex flex-wrap items-center gap-3">
+          <div className="mt-7">
+            <AnimatedCountdown targetDate={HERO.dataEvento} />
+          </div>
+
+          <div className="mt-8 flex flex-wrap items-center gap-3">
             <AcaoAssinar>Entrar para o ecossistema</AcaoAssinar>
             <Acao href="#ecossistema" variante="fantasma" icone={<IconeDesce className="size-[18px] shrink-0" />}>
               Entender o que eu recebo
             </Acao>
-          </Revelar>
-
+          </div>
         </div>
       </div>
 
       {/* faixa centralizada na divisória com a próxima seção */}
-      <div className="hero-loop mt-16 max-md:[&_.text-loop-svg_path[stroke-width]]:[stroke-width:92px] md:mt-24">
+      <div className="hero-loop mt-16 max-md:h-[23vw] max-md:min-h-[82px] max-md:[&_.text-loop-svg_path[stroke-width]]:[stroke-width:124px] md:mt-24">
         <TextLoop
           text="empreenda sim"
           shape="line"

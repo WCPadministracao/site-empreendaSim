@@ -3,40 +3,54 @@
 import { useRef, type ReactNode } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText as GSAPSplitText } from "gsap/SplitText";
 
-gsap.registerPlugin(useGSAP, ScrollTrigger, GSAPSplitText);
+gsap.registerPlugin(useGSAP, GSAPSplitText);
 
 /** Adaptação do efeito rise do React Bits para os títulos do site. */
 export function animarTituloDividido(titulo: HTMLElement, gatilho = titulo) {
   const media = gsap.matchMedia();
-  let cancelado = false;
 
-  function iniciar() {
-    const texto = GSAPSplitText.create(titulo, {
-      type: "words,chars",
-      tag: "span",
-      smartWrap: true,
-      charsClass: "split-char",
-      aria: "auto",
-    });
-    let terminou = false;
+  media.add("(prefers-reduced-motion: no-preference)", () => {
+    let texto: GSAPSplitText | undefined;
+    let entrada: gsap.core.Tween | undefined;
     let onda: gsap.core.Tween | undefined;
+    let terminou = false;
+    let cancelado = false;
 
-    gsap.fromTo(texto.chars, { opacity: 0, y: "0.65em" }, {
-      opacity: 1,
-      y: 0,
-      duration: 3,
-      ease: "power3.out",
-      stagger: 0.05,
-      clearProps: "transform,opacity",
-      scrollTrigger: { trigger: gatilho, start: "top 90%", once: true, refreshPriority: -2 },
-      onComplete: () => { terminou = true; },
-    });
+    // Observe a posição real do título, inclusive depois de fixações e redimensionamentos.
+    const observador = new IntersectionObserver((registros) => {
+      const registro = registros[registros.length - 1];
+      if (cancelado || texto || !registro?.isIntersecting || registro.intersectionRatio < 0.01) return;
+
+      observador.disconnect();
+      texto = GSAPSplitText.create(titulo, {
+        type: "words,chars",
+        tag: "span",
+        smartWrap: true,
+        charsClass: "split-char",
+        aria: "auto",
+      });
+      entrada = gsap.fromTo(texto.chars, { opacity: 0, y: "0.65em" }, {
+        opacity: 1,
+        y: 0,
+        duration: 3,
+        ease: "power3.out",
+        stagger: 0.05,
+        clearProps: "transform,opacity",
+        onComplete: () => { terminou = true; },
+      });
+    }, { threshold: 0.01 });
+
+    function observar() {
+      if (!cancelado) observador.observe(gatilho);
+    }
+
+    if (document.fonts.status === "loaded") observar();
+    else void document.fonts.ready.then(observar);
 
     function passarMouse(evento: PointerEvent) {
-      if (!terminou || evento.pointerType !== "mouse" || onda?.isActive()) return;
+      if (!texto || !terminou || evento.pointerType !== "mouse" || onda?.isActive()) return;
 
       let maisPerto = 0;
       let menorDistancia = Infinity;
@@ -59,27 +73,16 @@ export function animarTituloDividido(titulo: HTMLElement, gatilho = titulo) {
 
     titulo.addEventListener("pointerenter", passarMouse);
     return () => {
+      cancelado = true;
+      observador.disconnect();
       titulo.removeEventListener("pointerenter", passarMouse);
       onda?.kill();
-      texto.revert();
+      entrada?.kill();
+      texto?.revert();
     };
-  }
+  });
 
-  const preparar = () => {
-    if (!cancelado) media.add("(prefers-reduced-motion: no-preference)", iniciar);
-  };
-
-  // No celular, a troca de fonte pode alterar as quebras do título antes da entrada.
-  if (window.matchMedia("(width < 1024px)").matches && document.fonts.status === "loading") {
-    void document.fonts.ready.then(preparar);
-  } else {
-    preparar();
-  }
-
-  return () => {
-    cancelado = true;
-    media.revert();
-  };
+  return () => media.revert();
 }
 
 export function SplitText({ as: Tag, id, className, texto, destaque, children }: {

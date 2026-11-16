@@ -1,7 +1,6 @@
 /**
  * Todo o texto da página vive aqui.
- * Conteúdo real, herdado do site de referência. Nada foi inventado:
- * sem depoimento, sem número de membros, sem data de evento, sem logo de cliente.
+ * Conteúdo do site de referência e informações fornecidas pela equipe.
  */
 
 export const HOTMART_URL =
@@ -17,9 +16,10 @@ export const NAV = [
 ] as const;
 
 export const HERO = {
-  titulo: ["Venda mais.", "Organize sua empresa.", "Cresça com direção."],
-  lede: "Cursos práticos, comunidade, ferramentas, Cordex IA e benefícios em eventos presenciais. Tudo para você aplicar no seu negócio, em um único lugar.",
-  nota: "O próximo nível da sua empresa começa com uma decisão: empreender melhor.",
+  titulo: ["Empreenda Sim", "em Campinas"],
+  lede: "Um encontro presencial para quem quer aprender, trocar experiências e fazer sua empresa avançar.",
+  dataEvento: "2026-12-10T00:00:00-03:00",
+  dataExibida: "10 de dezembro de 2026",
 } as const;
 
 export const DORES = {
