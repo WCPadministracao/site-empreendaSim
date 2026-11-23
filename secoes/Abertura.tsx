@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { HERO } from "@/lib/content";
-import { Acao, AcaoAssinar } from "@/components/Acao";
+import { EVENTO_CAMPINAS_URL, HERO } from "@/lib/content";
+import { Acao } from "@/components/Acao";
 import { IconeDesce } from "@/components/Icones";
 import { RevelarTitulo } from "@/components/Revelar";
 import TextLoop from "@/components/TextLoop";
@@ -47,7 +47,7 @@ export default function Abertura() {
           </div>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <AcaoAssinar>Entrar para o ecossistema</AcaoAssinar>
+            <Acao href={EVENTO_CAMPINAS_URL}>Garanta seu ingresso em Campinas</Acao>
             <Acao href="#ecossistema" variante="fantasma" icone={<IconeDesce className="size-[18px] shrink-0" />}>
               Entender o que eu recebo
             </Acao>

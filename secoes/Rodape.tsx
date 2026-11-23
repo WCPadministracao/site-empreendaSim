@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { NAV, RODAPE } from "@/lib/content";
-import { AcaoAssinar } from "@/components/Acao";
+import { EVENTO_CAMPINAS_URL, NAV, RODAPE } from "@/lib/content";
+import { Acao } from "@/components/Acao";
 import { IconeCadeado } from "@/components/Icones";
 import { Revelar, RevelarTitulo } from "@/components/Revelar";
 
@@ -29,7 +29,7 @@ export default function Rodape() {
           />
           <Revelar delay={0.1} className="lg:pb-3">
             <p className="lede max-w-[38ch]">{RODAPE.chamada}</p>
-            <AcaoAssinar className="mt-8">{RODAPE.cta}</AcaoAssinar>
+            <Acao href={EVENTO_CAMPINAS_URL} className="mt-8">Garanta seu ingresso em Campinas</Acao>
           </Revelar>
         </div>
 

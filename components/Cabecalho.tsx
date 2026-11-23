@@ -5,8 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useMotionValueEvent, useScroll } from "motion/react";
-import { NAV, PRECO } from "@/lib/content";
-import { AcaoAssinar } from "./Acao";
+import { EVENTO_CAMPINAS_URL, NAV } from "@/lib/content";
+import { Acao } from "./Acao";
 import { IconeFechar, IconeMenu } from "./Icones";
 
 export default function Cabecalho() {
@@ -88,9 +88,9 @@ export default function Cabecalho() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <AcaoAssinar className="hidden min-h-[46px] px-5 text-[0.9rem] sm:inline-flex">
-            Quero fazer parte
-          </AcaoAssinar>
+          <Acao href={EVENTO_CAMPINAS_URL} className="hidden min-h-[46px] px-5 text-[0.9rem] sm:inline-flex">
+            Etapa Campinas
+          </Acao>
 
           <button
             type="button"
@@ -147,10 +147,9 @@ export default function Cabecalho() {
             </ul>
           </nav>
 
-          <AcaoAssinar className="mt-7 w-full justify-center">
-            Assinar por {PRECO.moeda} {PRECO.valor}
-            {PRECO.periodo}
-          </AcaoAssinar>
+          <Acao href={EVENTO_CAMPINAS_URL} className="mt-7 w-full justify-center">
+            Etapa Campinas
+          </Acao>
         </div>
       </dialog>
     </header>

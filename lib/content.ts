@@ -6,6 +6,9 @@
 export const HOTMART_URL =
   "https://hotmart.com/pt-br/marketplace/produtos/empreenda-sim-comunidade/P106727091B";
 
+export const EVENTO_CAMPINAS_URL =
+  "https://www.sympla.com.br/evento/empreenda-sim-etapa-campinas/3663555";
+
 export const PRECO = { valor: "127", moeda: "R$", periodo: "/mês" } as const;
 
 export const NAV = [
