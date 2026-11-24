@@ -15,26 +15,33 @@ export default function Abertura() {
         className="pointer-events-none absolute inset-0 overflow-hidden"
       >
         <div className="relative h-full w-full">
-          <Image
-            src="/experiencias/hero-dsc-8314.jpg"
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center"
-          />
+          <picture>
+            <source
+              srcSet="/experiencias/hero-campinas-mobile-poster.webp"
+              media="(max-width: 767px)"
+              type="image/webp"
+            />
+            <Image
+              src="/experiencias/hero-dsc-8314.jpg"
+              alt=""
+              fill
+              loading="eager"
+              fetchPriority="high"
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+          </picture>
           <video
             autoPlay
             muted
             loop
             playsInline
-            preload="metadata"
-            poster="/experiencias/hero-dsc-8314.jpg"
+            preload="auto"
             aria-hidden="true"
             className="absolute inset-0 h-full w-full object-cover object-center motion-reduce:hidden"
           >
             <source
-              src="/experiencias/hero-campinas-mobile.mp4"
+              src="/experiencias/hero-campinas-mobile-web.mp4"
               type="video/mp4"
               media="(max-width: 767px)"
             />
