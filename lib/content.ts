@@ -22,7 +22,7 @@ export const HERO = {
   titulo: ["Empreenda Sim", "em Campinas"],
   lede: "Um encontro presencial para quem quer aprender, trocar experiências e fazer sua empresa avançar.",
   dataEvento: "2026-12-10T00:00:00-03:00",
-  dataExibida: "10 de dezembro de 2026",
+  dataExibida: "10 de dezembro",
 } as const;
 
 export const DORES = {
@@ -105,6 +105,24 @@ export const ESPECIALISTAS = {
       alt: "Neto Pouza durante encontro empresarial",
       w: 934,
       h: 1400,
+    },
+    {
+      nome: "William Leite",
+      area: "Jornalista, apresentador e comunicador",
+      bio: "Com uma carreira consolidada no jornalismo e na televisão brasileira, Willian Leite construiu sua trajetória como um comunicador reconhecido pela autenticidade, pelo carisma e pela capacidade de conquistar a confiança do público.",
+      foto: "/team/william-leite.png",
+      alt: "Retrato de William Leite",
+      w: 1254,
+      h: 1254,
+    },
+    {
+      nome: "Armando Comitre",
+      area: "Palestrante e Mentor",
+      bio: "Treinamentos e palestras para pessoas, líderes e profissionais que querem comunicar com clareza, presença e impacto real.",
+      foto: "/team/armando-comitre.jpg",
+      alt: "Retrato de Armando Comitre",
+      w: 1254,
+      h: 1254,
     },
   ],
 } as const;

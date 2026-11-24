@@ -23,7 +23,24 @@ export default function Abertura() {
             sizes="100vw"
             className="object-cover object-center"
           />
-          <div className="absolute inset-0 bg-linear-to-r from-ink/95 via-ink/85 to-ink/65" />
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster="/experiencias/hero-dsc-8314.jpg"
+            aria-hidden="true"
+            className="absolute inset-0 h-full w-full object-cover object-center motion-reduce:hidden"
+          >
+            <source
+              src="/experiencias/hero-campinas-mobile.mp4"
+              type="video/mp4"
+              media="(max-width: 767px)"
+            />
+            <source src="/experiencias/hero-campinas.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-linear-to-r from-ink/85 via-ink/65 to-ink/40" />
         </div>
       </div>
 
@@ -31,7 +48,7 @@ export default function Abertura() {
         <div className="max-w-[min(100%,900px)]">
           <p className="mb-5 text-sm font-semibold text-green sm:text-base">
             <time dateTime={HERO.dataEvento.slice(0, 10)}>{HERO.dataExibida}</time>
-            {" · Campinas, SP"}
+            {" · Hotel Monreale Plus Midtown Campinas"}
           </p>
           <RevelarTitulo
             as="h1"

@@ -1,0 +1,54 @@
+.control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 44px;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--btn-border);
+  border-radius: var(--btn-radius);
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  font-weight: 700;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 120ms var(--ease-out-strong), box-shadow 120ms var(--ease-out-strong);
+}
+
+.control[data-border="false"] {
+  border: 0;
+}
+
+.control[data-shadow="true"] {
+  box-shadow: 4px 4px 0 var(--btn-shadow);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .control[data-shadow="true"]:hover:not(:disabled) {
+    box-shadow: 6px 6px 0 var(--btn-shadow);
+    transform: translate(-2px, -2px);
+  }
+}
+
+.control[data-shadow="true"]:active:not(:disabled) {
+  box-shadow: none;
+  transform: translate(4px, 4px);
+}
+
+.control[data-shadow="false"]:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.control:focus-visible {
+  outline: 2px solid var(--color-cream);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .control {
+    transition: none;
+  }
+
+  .control[data-shadow]:is(:hover, :active):not(:disabled) {
+    transform: none;
+  }
+}

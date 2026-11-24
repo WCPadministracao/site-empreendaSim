@@ -1,0 +1,128 @@
+.control {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  min-height: 44px;
+  padding: 0.75rem 1.125rem;
+  border-radius: 0.875rem;
+  background-color: rgb(12 28 21 / 0.94);
+  background-image: linear-gradient(155deg, rgb(209 255 228 / 0.11), transparent 64%);
+  color: var(--color-cream);
+  box-shadow: inset 0 1px 0 rgb(228 255 240 / 0.18), 0 8px 22px rgb(0 0 0 / 0.24);
+  font-weight: 700;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 120ms var(--ease-out-strong);
+}
+
+.control[data-size="sm"] {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.control[data-size="icon"] {
+  width: 44px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.control:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+.control:focus-visible {
+  outline: 2px solid var(--color-cream);
+  outline-offset: 4px;
+}
+
+.control:disabled {
+  opacity: 0.65;
+}
+
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .control {
+    background-color: rgb(12 28 21 / 0.58);
+    -webkit-backdrop-filter: blur(14px) saturate(120%);
+    backdrop-filter: blur(14px) saturate(120%);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .control {
+    background-color: #0c1c15;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+.edge,
+.rim,
+.reflection {
+  position: absolute;
+  pointer-events: none;
+}
+
+.edge {
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+.rim {
+  inset-block: 0;
+  left: -18%;
+  width: 136%;
+  background: linear-gradient(
+    105deg,
+    rgb(137 192 163 / 0.28) 5%,
+    rgb(94 195 142 / 0.48) 18%,
+    rgb(216 255 233 / 0.66) 29%,
+    rgb(137 192 163 / 0.32) 45%,
+    rgb(122 233 173 / 0.48) 66%,
+    rgb(230 255 240 / 0.64) 76%,
+    rgb(137 192 163 / 0.28) 100%
+  );
+}
+
+.reflection {
+  inset-block: 0;
+  left: -58%;
+  width: 52%;
+  background: linear-gradient(90deg, transparent, rgb(240 255 245 / 0.4), transparent);
+  transform: translateX(0) skewX(-12deg);
+}
+
+.content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-width: 0;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .control[data-still="false"] .reflection {
+    transition: transform 2.4s var(--ease-in-out-strong);
+  }
+
+  .control[data-still="false"]:hover:not(:disabled) .reflection {
+    transform: translateX(310%) skewX(-12deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .control {
+    transition: none;
+  }
+
+  .control:active:not(:disabled) {
+    transform: none;
+  }
+}

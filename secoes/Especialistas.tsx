@@ -87,7 +87,11 @@ export default function Especialistas() {
               fechada = medidas.fechada;
               aberta = medidas.aberta;
               gsap.set(fotos, { height: fechada });
-              recuos = linhas.map((_, indice) => indice * medidas.passo);
+              recuos = linhas.map((item) => item.offsetTop - linhas[0].offsetTop);
+              // A lista sobe dentro do painel: sua altura não deve reservar
+              // novamente o espaço dos perfis que já passaram.
+              const alturaPainel = Math.max(aberta + 33, ...linhas.map((item) => item.offsetHeight));
+              secao.style.setProperty("--altura-especialistas", `${Math.ceil(alturaPainel) + 1}px`);
               return;
             }
 
@@ -143,6 +147,9 @@ export default function Especialistas() {
                 { y: () => -recuos[i + 1], duration: 1 },
                 base + 2,
               );
+            } else {
+              // A última foto também precisa de uma pausa aberta antes de liberar a seção.
+              tl.to(fotos[i], { height: () => aberta, duration: 1 }, base + 1);
             }
           });
 
@@ -166,7 +173,7 @@ export default function Especialistas() {
       ref={escopo}
       id="especialistas"
       aria-labelledby="especialistas-titulo"
-      className="relative pt-20 pb-8 md:pt-28 lg:pb-28"
+      className="relative pt-20 pb-8 md:pt-28"
     >
       <div className="shell lg:flex lg:items-end lg:justify-between lg:gap-14">
         <RevelarTitulo
@@ -180,7 +187,7 @@ export default function Especialistas() {
       </div>
 
       <div ref={percurso} className="max-lg:mt-12 max-lg:after:block max-lg:after:h-[var(--curso-especialistas,0px)]">
-        <div ref={pino} className="overflow-hidden max-lg:[position:var(--posicao-especialistas,static)] max-lg:top-[20svh] max-lg:max-h-[var(--altura-especialistas,none)] max-lg:[contain:layout] lg:mt-16">
+        <div ref={pino} className="max-h-[var(--altura-especialistas,none)] overflow-hidden max-lg:[position:var(--posicao-especialistas,static)] max-lg:top-[20svh] max-lg:[contain:layout] lg:mt-16">
           <div className="shell">
             <ul ref={lista} className="border-b border-[var(--line)] max-lg:relative">
               {ESPECIALISTAS.pessoas.map((pessoa, i) => (
@@ -204,7 +211,7 @@ function LinhaEspecialista({ pessoa, indice }: { pessoa: Pessoa; indice: number 
         </span>
         <div className="min-w-0">
           <p className="font-medium text-green max-lg:text-sm max-lg:leading-snug max-lg:[overflow-wrap:anywhere] lg:text-[0.95rem]">{pessoa.area}</p>
-          <p className="mt-3 hidden text-[0.95rem] leading-relaxed text-muted lg:block">
+          <p className="mt-3 hidden whitespace-normal text-[0.95rem] leading-relaxed text-muted lg:block">
             {pessoa.bio}
           </p>
         </div>
@@ -216,7 +223,7 @@ function LinhaEspecialista({ pessoa, indice }: { pessoa: Pessoa; indice: number 
           src={pessoa.foto}
           alt={pessoa.alt}
           fill
-          sizes="(max-width: 1023px) min(82vw, 355px), 46vw"
+          unoptimized
           className="object-cover"
         />
       </div>
@@ -227,7 +234,7 @@ function LinhaEspecialista({ pessoa, indice }: { pessoa: Pessoa; indice: number 
           {pessoa.nome}
         </h3>
       </div>
-      <p className="col-span-full mx-auto max-w-[52ch] text-[0.95rem] leading-relaxed text-muted lg:hidden">
+      <p className="col-span-full mx-auto max-w-[52ch] whitespace-normal text-[0.95rem] leading-relaxed text-muted lg:hidden">
         {pessoa.bio}
       </p>
     </li>
